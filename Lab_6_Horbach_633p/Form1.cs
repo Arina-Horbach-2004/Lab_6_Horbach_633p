@@ -117,8 +117,10 @@ namespace Lab_6_Horbach_633p
             textBox_count.Text = data.GetLength(0).ToString();
         }
 
+        // Кнопка для запуску обчислень (кроки 1–7)
         private void button_fount_critical_path_and_days_Click(object sender, EventArgs e)
         {
+            // Крок 1: Уведення даних з таблиці
             List<Metods.WorkItem> workItems = new List<Metods.WorkItem>();
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -147,19 +149,24 @@ namespace Lab_6_Horbach_633p
                 });
             }
 
+            // Крок 3–6: Розрахунок розкладу
             Metods.ProjectScheduler scheduler = new Metods.ProjectScheduler(workItems);
             scheduler.CalculateSchedule();
 
+            // Крок 7: Визначення критичного шляху
             var criticalPath = workItems
                                 .Where(w => w.IsCritical)
                                 .OrderBy(w => w.EarlyStart)
                                 .Select(w => w.Id.ToString());
 
+            // Виведення критичного шляху (крок 9)
             textBox_critical_path.Text = string.Join(" - ", criticalPath);
 
+            // Крок 4: Виведення тривалості проєкту
             int totalDuration = workItems.Max(w => w.EarlyFinish);
             textBox_days.Text = totalDuration.ToString();
         }
+
 
         private void button_protokol_Click(object sender, EventArgs e)
         {
